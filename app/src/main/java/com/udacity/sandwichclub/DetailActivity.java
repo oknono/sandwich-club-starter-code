@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -12,22 +13,22 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_POSITION = "extra_position";
+    public static final String EXTRA_POSITION = "extra_position"; // what do these two vars do?
     private static final int DEFAULT_POSITION = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail); // use layout file
 
-        ImageView ingredientsIv = findViewById(R.id.image_iv);
+        ImageView ingredientsIv = findViewById(R.id.image_iv); // what does this refer to? Does this need to be defined?
 
-        Intent intent = getIntent();
+        Intent intent = getIntent(); // intent does not get passed
         if (intent == null) {
             closeOnError();
         }
 
-        int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
+        int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION); // some issue with intent
         if (position == DEFAULT_POSITION) {
             // EXTRA_POSITION not found in intent
             closeOnError();
@@ -43,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +57,15 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich s) {
+        TextView pooView;
+        pooView = findViewById(R.id.place_of_origin_tv);
+        pooView.append(s.getPlaceOfOrigin());
 
+        TextView descriptionView;
+        descriptionView = findViewById(R.id.description_tv);
+        descriptionView.append(s.getDescription());
+
+        // We are going to need to add ingredients and AKA. And then done!
     }
 }
