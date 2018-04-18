@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,24 +14,25 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_POSITION = "extra_position"; // what do these two vars do?
+    public static final String EXTRA_POSITION = "extra_position"; //
     private static final int DEFAULT_POSITION = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail); // use layout file
+        setContentView(R.layout.activity_detail);
 
-        ImageView ingredientsIv = findViewById(R.id.image_iv); // what does this refer to? Does this need to be defined?
+        ImageView ingredientsIv = findViewById(R.id.image_iv);
 
-        Intent intent = getIntent(); // intent does not get passed
+        Intent intent = getIntent();
         if (intent == null) {
             closeOnError();
         }
 
-        int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION); // some issue with intent
+        int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
         if (position == DEFAULT_POSITION) {
             // EXTRA_POSITION not found in intent
+            Log.d(">>>>>>>", "intent");
             closeOnError();
             return;
         }
@@ -40,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         Sandwich sandwich = JsonUtils.parseSandwichJson(json);
         if (sandwich == null) {
             // Sandwich data unavailable
+            Log.d(">>>>>>>", "unavailable");
             closeOnError();
             return;
         }
@@ -58,14 +61,23 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI(Sandwich s) {
-        TextView pooView;
-        pooView = findViewById(R.id.place_of_origin_tv);
-        pooView.append(s.getPlaceOfOrigin());
+        TextView placeOfOriginView;
+        placeOfOriginView = findViewById(R.id.place_of_origin_tv);
+        placeOfOriginView.append(s.getPlaceOfOrigin());
 
         TextView descriptionView;
         descriptionView = findViewById(R.id.description_tv);
         descriptionView.append(s.getDescription());
 
-        // We are going to need to add ingredients and AKA. And then done!
+        TextView ingredientsView;
+        ingredientsView = findViewById(R.id.ingredients_tv);
+        //TO DO: Remove brackets
+        String ingredients = s.getIngredients().toString();
+        ingredientsView.append(ingredients);
+
+        TextView alsoKnownAsView;
+        alsoKnownAsView = findViewById(R.id.also_known_tv);
+        String alsoKnownAs = s.getAlsoKnownAs().toString();
+        alsoKnownAsView.append(alsoKnownAs);
     }
 }

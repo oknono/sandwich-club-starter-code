@@ -11,32 +11,56 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.json.JSONObject;
 
 public class JsonUtils {
 
-    public static Sandwich parseSandwichJson(String sandwich_json) {
-        // we are going to want to check if we already have a sandwich?
-        // how to deal with String Lists (AKA and Ingredients)
-        Sandwich chosenSandwich = new Sandwich();
-        try {
-            JSONObject sandwich = new JSONObject(sandwich_json);
-            JSONObject name = sandwich.getJSONObject("name");
-            String MainName = name.getString("mainName");
-            //String AlsoKnownAs = name.getString("alsoKnownAs");
-            String Image = sandwich.getString("image");
-            String PlaceOfOrigin = sandwich.getString("placeOfOrigin");
-            String Description = sandwich.getString("description");
-            chosenSandwich.setMainName(MainName);
-            //chosenSandwich.setAlsoKnownAs(AlsoKnownAs);
-            chosenSandwich.setImage(Image);
-            chosenSandwich.setPlaceOfOrigin(PlaceOfOrigin);
-            chosenSandwich.setDescription(Description);
-            //chosenSandwich.setIngredients(Ingredients);
+    // got this from @mbeevor; really need to brush up java skills
+    public static final String NAME = "name";
+    public static final String MAIN_NAME = "mainName";
+    public static final String ALSO_KNOWN_AS = "alsoKnownAs";
+    public static final String INGREDIENTS = "ingredients";
+    public static final String PLACE_OF_ORIGIN = "placeOfOrigin";
+    public static final String DESCRIPTION = "description";
+    public static final String IMAGE = "image";
 
-        } catch (JSONException e){
-            Log.e("JSON_ERROR", "Parsing went tipsy turvy");
+    public static final String TAG = "JSONUtils";
+
+
+    public static Sandwich parseSandwichJson(String json) {
+        // Java way: best practice to declare and assign vars separately?
+        JSONObject sandwichJSON;
+        String mainName = "";
+        List<String> alsoKnownAs = new ArrayList<>();
+        String placeOfOrigin = "";
+        String description = "";
+        String image = "";
+        List<String> ingredients = new ArrayList<>();
+        try {
+            sandwichJSON = new JSONObject(json);
+            JSONObject sandwichName = sandwichJSON.getJSONObject(NAME);
+            mainName = sandwichName.getString(MAIN_NAME);
+            placeOfOrigin = sandwichJSON.getString(PLACE_OF_ORIGIN);
+            description = sandwichJSON.getString(DESCRIPTION);
+            image = sandwichJSON.getString(IMAGE);
+            // The trickier ones with JSONArray
+            JSONArray alsoKnownAsArray = sandwichName.getJSONArray(ALSO_KNOWN_AS);
+            if (alsoKnownAsArray.length() > 0){
+                for (int i = 0; i < alsoKnownAsArray.length(); i++) {
+                    String alsoKnownAsString = alsoKnownAsArray.getString(i);
+                    alsoKnownAs.add(alsoKnownAsString);
+                }
+            }
+            JSONArray ingredientsArray = sandwichJSON.getJSONArray(INGREDIENTS);
+            for (int j = 0; j < ingredientsArray.length(); j++) {
+                String ingredientsString = ingredientsArray.getString(j);
+                ingredients.add(ingredientsString);
+            }
+            // what is better; contructor like this or make a new sandwich instance and use setters?
+            return new Sandwich(mainName, alsoKnownAs, placeOfOrigin,
+                    description, image, ingredients);
+            } catch (final JSONException e) {
+            Log.e(TAG, "Error in parsing Json file", e);
+            return null;
         }
-        return chosenSandwich;
     }
 }
