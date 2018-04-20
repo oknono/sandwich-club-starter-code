@@ -58,7 +58,7 @@ public class JsonUtils {
             // what is better; contructor like this or make a new sandwich instance and use setters?
             return new Sandwich(mainName, alsoKnownAs, placeOfOrigin,
                     description, image, ingredients);
-            } catch (final JSONException e) {
+            } catch (JSONException e) {
             Log.e(TAG, "Error in parsing Json file", e);
             return null;
         }

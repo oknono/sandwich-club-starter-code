@@ -1,6 +1,7 @@
 package com.udacity.sandwichclub;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -63,21 +66,52 @@ public class DetailActivity extends AppCompatActivity {
     private void populateUI(Sandwich s) {
         TextView placeOfOriginView;
         placeOfOriginView = findViewById(R.id.place_of_origin_tv);
-        placeOfOriginView.append(s.getPlaceOfOrigin());
+        String placeOfOriginText = s.getPlaceOfOrigin();
+        Log.d("WHATS HAPPENING", placeOfOriginText)   ;
+        placeOfOriginText =  (placeOfOriginText != "") ? placeOfOriginText :  "N/A";
+        placeOfOriginView.append(placeOfOriginText);
 
         TextView descriptionView;
         descriptionView = findViewById(R.id.description_tv);
-        descriptionView.append(s.getDescription());
+        String descriptionText = s.getDescription();
+        descriptionText =  (descriptionText != "") ? descriptionText :  "N/A";
+        descriptionView.append(descriptionText);
 
         TextView ingredientsView;
         ingredientsView = findViewById(R.id.ingredients_tv);
-        //TO DO: Remove brackets
-        String ingredients = s.getIngredients().toString();
-        ingredientsView.append(ingredients);
+        String ingredientsText = buildIngredientString(s.getIngredients());
+        ingredientsText =  (ingredientsText != "") ? ingredientsText :  "N/A";
+        ingredientsView.append(ingredientsText);
 
         TextView alsoKnownAsView;
         alsoKnownAsView = findViewById(R.id.also_known_tv);
-        String alsoKnownAs = s.getAlsoKnownAs().toString();
-        alsoKnownAsView.append(alsoKnownAs);
+        String alsoKnownAsText = buildAKAString(s.getAlsoKnownAs());
+        alsoKnownAsText =  (alsoKnownAsText != "") ? alsoKnownAsText :  "N/A";
+        alsoKnownAsView.append(alsoKnownAsText);
+    }
+
+    private String buildIngredientString(List<String> l){
+        int ingredientsListLength =  l.size();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ingredientsListLength - 2; i++)
+        {
+            sb.append(l.get(i));
+            sb.append("\n");
+        }
+        sb.append(l.get(ingredientsListLength - 1));
+
+        return sb.toString();
+    }
+
+    private String buildAKAString(List<String> l){
+        int akaListLength =  l.size();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < akaListLength - 2; i++)
+        {
+            sb.append(l.get(i));
+            sb.append(" / ");
+        }
+        sb.append(l.get(akaListLength - 1));
+        return sb.toString();
     }
 }
