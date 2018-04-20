@@ -29,11 +29,11 @@ public class JsonUtils {
     public static Sandwich parseSandwichJson(String json) {
         // Java way: best practice to declare and assign vars separately?
         JSONObject sandwichJSON;
-        String mainName = "";
+        String mainName;
         List<String> alsoKnownAs = new ArrayList<>();
-        String placeOfOrigin = "";
-        String description = "";
-        String image = "";
+        String placeOfOrigin;
+        String description;
+        String image;
         List<String> ingredients = new ArrayList<>();
         try {
             sandwichJSON = new JSONObject(json);
@@ -42,7 +42,7 @@ public class JsonUtils {
             placeOfOrigin = sandwichJSON.getString(PLACE_OF_ORIGIN);
             description = sandwichJSON.getString(DESCRIPTION);
             image = sandwichJSON.getString(IMAGE);
-            // The trickier ones with JSONArray
+            // The trickier ones with JSONArray - to do: difference list and array
             JSONArray alsoKnownAsArray = sandwichName.getJSONArray(ALSO_KNOWN_AS);
             if (alsoKnownAsArray.length() > 0){
                 for (int i = 0; i < alsoKnownAsArray.length(); i++) {

@@ -1,7 +1,6 @@
 package com.udacity.sandwichclub;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_POSITION = "extra_position"; //
+    public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
     @Override
@@ -34,8 +33,6 @@ public class DetailActivity extends AppCompatActivity {
 
         int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
         if (position == DEFAULT_POSITION) {
-            // EXTRA_POSITION not found in intent
-            Log.d(">>>>>>>", "intent");
             closeOnError();
             return;
         }
@@ -44,8 +41,6 @@ public class DetailActivity extends AppCompatActivity {
         String json = sandwiches[position];
         Sandwich sandwich = JsonUtils.parseSandwichJson(json);
         if (sandwich == null) {
-            // Sandwich data unavailable
-            Log.d(">>>>>>>", "unavailable");
             closeOnError();
             return;
         }
@@ -67,29 +62,30 @@ public class DetailActivity extends AppCompatActivity {
         TextView placeOfOriginView;
         placeOfOriginView = findViewById(R.id.place_of_origin_tv);
         String placeOfOriginText = s.getPlaceOfOrigin();
-        Log.d("WHATS HAPPENING", placeOfOriginText)   ;
-        placeOfOriginText =  (placeOfOriginText != "") ? placeOfOriginText :  "N/A";
+        // to do extract this
+        placeOfOriginText =  (placeOfOriginText.equals("")) ?  "N/A" : placeOfOriginText;
         placeOfOriginView.append(placeOfOriginText);
 
         TextView descriptionView;
         descriptionView = findViewById(R.id.description_tv);
         String descriptionText = s.getDescription();
-        descriptionText =  (descriptionText != "") ? descriptionText :  "N/A";
+        descriptionText =  (descriptionText.equals("")) ?   "N/A" : descriptionText;
         descriptionView.append(descriptionText);
 
         TextView ingredientsView;
         ingredientsView = findViewById(R.id.ingredients_tv);
         String ingredientsText = buildIngredientString(s.getIngredients());
-        ingredientsText =  (ingredientsText != "") ? ingredientsText :  "N/A";
+        ingredientsText =  (ingredientsText.equals("")) ?   "N/A" : ingredientsText;
         ingredientsView.append(ingredientsText);
 
         TextView alsoKnownAsView;
         alsoKnownAsView = findViewById(R.id.also_known_tv);
         String alsoKnownAsText = buildAKAString(s.getAlsoKnownAs());
-        alsoKnownAsText =  (alsoKnownAsText != "") ? alsoKnownAsText :  "N/A";
+        alsoKnownAsText =  (alsoKnownAsText.equals("")) ?  "N/A" : alsoKnownAsText;
         alsoKnownAsView.append(alsoKnownAsText);
     }
 
+    //to do: make more generic
     private String buildIngredientString(List<String> l){
         int ingredientsListLength =  l.size();
         StringBuilder sb = new StringBuilder();
