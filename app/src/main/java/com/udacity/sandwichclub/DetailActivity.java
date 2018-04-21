@@ -18,6 +18,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
+    public static final String NO_VALUE = "N/A";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,52 +63,66 @@ public class DetailActivity extends AppCompatActivity {
         TextView placeOfOriginView;
         placeOfOriginView = findViewById(R.id.place_of_origin_tv);
         String placeOfOriginText = s.getPlaceOfOrigin();
-        // to do extract this
-        placeOfOriginText =  (placeOfOriginText.equals("")) ?  "N/A" : placeOfOriginText;
-        placeOfOriginView.append(placeOfOriginText);
+        placeOfOriginView.append(isEmpty(placeOfOriginText));
 
         TextView descriptionView;
         descriptionView = findViewById(R.id.description_tv);
         String descriptionText = s.getDescription();
-        descriptionText =  (descriptionText.equals("")) ?   "N/A" : descriptionText;
-        descriptionView.append(descriptionText);
+        descriptionView.append(isEmpty(descriptionText));
 
-        TextView ingredientsView;
-        ingredientsView = findViewById(R.id.ingredients_tv);
-        String ingredientsText = buildIngredientString(s.getIngredients());
-        ingredientsText =  (ingredientsText.equals("")) ?   "N/A" : ingredientsText;
-        ingredientsView.append(ingredientsText);
-
-        TextView alsoKnownAsView;
-        alsoKnownAsView = findViewById(R.id.also_known_tv);
-        String alsoKnownAsText = buildAKAString(s.getAlsoKnownAs());
-        alsoKnownAsText =  (alsoKnownAsText.equals("")) ?  "N/A" : alsoKnownAsText;
-        alsoKnownAsView.append(alsoKnownAsText);
+//        TextView ingredientsView;
+//        ingredientsView = findViewById(R.id.ingredients_tv);
+//        String ingredientsText = buildIngredientString(s.getIngredients());
+//        ingredientsText =  (ingredientsText.equals("")) ?   "N/A" : ingredientsText;
+//        ingredientsView.append(ingredientsText);
+//
+//        TextView alsoKnownAsView;
+//        alsoKnownAsView = findViewById(R.id.also_known_tv);
+//        String alsoKnownAsText = buildAKAString(s.getAlsoKnownAs());
+//        Log.d("AKA >>>>>>>>>>>>", alsoKnownAsText);
+//        //alsoKnownAsText =  (alsoKnownAsText.equals("")) ?  "N/A" : alsoKnownAsText;
+//        //alsoKnownAsView.append(alsoKnownAsText);
     }
+
+    private String isEmpty(String s){
+        Boolean emptyString;
+        String resultString;
+        emptyString =  s.equals("");
+        resultString = emptyString?  "N/A" : s;
+        return resultString;
+    }
+
 
     //to do: make more generic
     private String buildIngredientString(List<String> l){
-        int ingredientsListLength =  l.size();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ingredientsListLength - 2; i++)
-        {
-            sb.append(l.get(i));
-            sb.append("\n");
-        }
-        sb.append(l.get(ingredientsListLength - 1));
-
-        return sb.toString();
+        try {
+            int ingredientsListLength = l.size();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < ingredientsListLength - 2; i++) {
+                sb.append(l.get(i));
+                sb.append("\n");
+            }
+            sb.append(l.get(ingredientsListLength - 1));
+            return sb.toString();
+        } catch (Error e) {
+            Log.e("OOPS1", "Error in buildIngredientString", e);}
+        return "";
     }
 
     private String buildAKAString(List<String> l){
-        int akaListLength =  l.size();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < akaListLength - 2; i++)
-        {
-            sb.append(l.get(i));
-            sb.append(" / ");
+            try {
+                int akaListLength =  l.size();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < akaListLength - 2; i++)
+                {
+                    sb.append(l.get(i));
+                    sb.append(" / ");
+                }
+                sb.append(l.get(akaListLength - 1));
+                return sb.toString();
+            } catch (Error e) {
+                Log.e("OOPS2", "Error in parsing buildAKAString", e);
+            }
+            return "";
         }
-        sb.append(l.get(akaListLength - 1));
-        return sb.toString();
-    }
 }
