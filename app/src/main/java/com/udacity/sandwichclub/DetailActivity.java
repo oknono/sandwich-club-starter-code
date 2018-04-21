@@ -19,6 +19,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
     public static final String NO_VALUE = "N/A";
+    public static final String EMPTY_STRING = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +86,8 @@ public class DetailActivity extends AppCompatActivity {
     private String isEmpty(String s){
         Boolean emptyString;
         String resultString;
-        emptyString =  s.equals("");
-        resultString = emptyString?  "N/A" : s;
+        emptyString =  s.equals(EMPTY_STRING);
+        resultString = emptyString?  NO_VALUE : s;
         return resultString;
     }
 

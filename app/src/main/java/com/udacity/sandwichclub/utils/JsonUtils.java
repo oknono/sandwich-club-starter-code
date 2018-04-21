@@ -55,7 +55,7 @@ public class JsonUtils {
                 String ingredientsString = ingredientsArray.getString(j);
                 ingredients.add(ingredientsString);
             }
-            // what is better; contructor like this or make a new sandwich instance and use setters?
+            // what is better; constructor like this or make a new sandwich instance and use setters?
             return new Sandwich(mainName, alsoKnownAs, placeOfOrigin,
                     description, image, ingredients);
             } catch (JSONException e) {
