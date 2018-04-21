@@ -70,20 +70,18 @@ public class DetailActivity extends AppCompatActivity {
         String descriptionText = s.getDescription();
         descriptionView.append(isEmpty(descriptionText));
 
-//        TextView ingredientsView;
-//        ingredientsView = findViewById(R.id.ingredients_tv);
-//        String ingredientsText = buildIngredientString(s.getIngredients());
-//        ingredientsText =  (ingredientsText.equals("")) ?   "N/A" : ingredientsText;
-//        ingredientsView.append(ingredientsText);
-//
-//        TextView alsoKnownAsView;
-//        alsoKnownAsView = findViewById(R.id.also_known_tv);
-//        String alsoKnownAsText = buildAKAString(s.getAlsoKnownAs());
-//        Log.d("AKA >>>>>>>>>>>>", alsoKnownAsText);
-//        //alsoKnownAsText =  (alsoKnownAsText.equals("")) ?  "N/A" : alsoKnownAsText;
-//        //alsoKnownAsView.append(alsoKnownAsText);
+        TextView ingredientsView;
+        ingredientsView = findViewById(R.id.ingredients_tv);
+        String ingredientsText = buildSpecialString(s.getIngredients(), "\n");
+        ingredientsView.append(isEmpty(ingredientsText));
+
+        TextView alsoKnownAsView;
+        alsoKnownAsView = findViewById(R.id.also_known_tv);
+        String alsoKnownAsText = buildSpecialString(s.getAlsoKnownAs(), " / ");
+        alsoKnownAsView.append(isEmpty(alsoKnownAsText));
     }
 
+    // want a test for this
     private String isEmpty(String s){
         Boolean emptyString;
         String resultString;
@@ -93,36 +91,24 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    //to do: make more generic
-    private String buildIngredientString(List<String> l){
-        try {
-            int ingredientsListLength = l.size();
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < ingredientsListLength - 2; i++) {
-                sb.append(l.get(i));
-                sb.append("\n");
-            }
-            sb.append(l.get(ingredientsListLength - 1));
-            return sb.toString();
-        } catch (Error e) {
-            Log.e("OOPS1", "Error in buildIngredientString", e);}
-        return "";
-    }
-
-    private String buildAKAString(List<String> l){
-            try {
+    // want a test for this // would have gone lot faster w/ TDD
+    private String buildSpecialString(List<String> l, String delimiter){
+        if (l.size() == 1){
+            return l.get(0);
+        }
+        else if (l.size() > 1){
                 int akaListLength =  l.size();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < akaListLength - 2; i++)
                 {
                     sb.append(l.get(i));
-                    sb.append(" / ");
+                    sb.append(delimiter);
                 }
                 sb.append(l.get(akaListLength - 1));
                 return sb.toString();
-            } catch (Error e) {
-                Log.e("OOPS2", "Error in parsing buildAKAString", e);
             }
-            return "";
-        }
+            else {
+                return "";
+            }
+    }
 }
